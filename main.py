@@ -29,7 +29,7 @@ r = sr.Recognizer()
 
 
 with sr.Microphone() as source:
-    with open('name.txt') as f:
+    with open('name.txt', 'r') as f:
         while True:
             audio = r.listen(source)  # starts and stops recording by default silence time
 
@@ -42,13 +42,17 @@ with sr.Microphone() as source:
                 print(f"The program thinks you said: \n>>>\t\t {generated_text}")
 
                 # if the user called the AI name (inside 'name.txt')
-                if f"hey {f.readlines()}" in generated_text:
-                    read_string("Hey. ask me anything!")
-
+                print(f"hey {f.readline().strip()}")
+                if f"hey {f.readline().strip()}" in generated_text:
+                    read_string("ask me anything")
+                    print("listening to user question...")
+                    user_q = r.listen(source)  # listening for user question
+                    user_q_text = r.recognize_google(user_q)  # converting user question into text
+                    print(f"user question > {user_q_text}")
                     # Sending the received text to chatGPT
                     response = openai.Completion.create(
                         model="text-davinci-003",  # chatGPT model
-                        prompt=generated_text,
+                        prompt=user_q_text,
                         temperature=0.3,  # creativeness
                         max_tokens=150,
                         frequency_penalty=0.0,  # recurrence of sentences
