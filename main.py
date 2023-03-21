@@ -70,7 +70,7 @@ def activate_assistant(mic):
 
 # connection with openAI API
 openai.api_key = "MY_API_KEY"
-openai.api_key = "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"
+
 # setup audio and speech recognizer instance
 r = sr.Recognizer()
 
